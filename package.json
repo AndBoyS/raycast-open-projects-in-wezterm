@@ -1,0 +1,50 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "open-projects-on-ide",
+  "title": "Open Projects on IDE",
+  "description": "Open projects in your preferred IDE",
+  "icon": "command-icon.png",
+  "author": "Leon Ho",
+  "categories": [
+    "Developer Tools"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "index",
+      "title": "Open Project",
+      "description": "Open a project in your preferred IDE",
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "workspacePath",
+          "type": "textfield",
+          "required": true,
+          "title": "Workspace Path",
+          "description": "Path to your workspace directory",
+          "default": "~/Projects",
+          "placeholder": "~/Projects"
+        }
+      ]
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.67.1"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "1.0.5",
+    "@types/node": "18.8.3",
+    "@types/react": "18.0.9",
+    "eslint": "^7.32.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.4.3"
+  },
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "prepublishOnly": "echo \"\\n\\nIt seems like you are trying to publish the Raycast extension to npm.\\n\\nIf you did intend to publish it to npm, remove the \\`prepublishOnly\\` script and rerun \\`npm publish\\` again.\\nIf you wanted to publish it to the Raycast Store instead, use \\`npm run publish\\` instead.\\n\\n\" && exit 1",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}
