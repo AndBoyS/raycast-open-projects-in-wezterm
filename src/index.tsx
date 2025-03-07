@@ -22,6 +22,14 @@ interface Preferences {
 
 const IDE_OPTIONS: IDEOption[] = [
   { 
+    name: "Cursor", 
+    appName: "cursor",
+    shortcut: {
+      modifiers: [],
+      key: "return"
+    }
+  },
+  { 
     name: "VSCode", 
     appName: "visual studio code",
     shortcut: {
@@ -34,14 +42,6 @@ const IDE_OPTIONS: IDEOption[] = [
     appName: "windsurf",
     shortcut: {
       modifiers: ["opt"],
-      key: "return"
-    }
-  },
-  { 
-    name: "Cursor", 
-    appName: "cursor",
-    shortcut: {
-      modifiers: [],
       key: "return"
     }
   }
