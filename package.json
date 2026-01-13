@@ -24,6 +24,15 @@
           "description": "Path to your workspace directory",
           "default": "~/Projects",
           "placeholder": "~/Projects"
+        },
+        {
+          "name": "weztermPath",
+          "type": "textfield",
+          "required": true,
+          "title": "wezterm path",
+          "description": "Path to your wezterm executable",
+          "default": "wezterm",
+          "placeholder": "wezterm"
         }
       ]
     }
@@ -48,3 +57,4 @@
     "publish": "npx @raycast/api@latest publish"
   }
 }
+

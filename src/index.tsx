@@ -18,39 +18,24 @@ interface IDEOption {
 
 interface Preferences {
   workspacePath: string;
+  weztermPath: string;
 }
 
 const IDE_OPTIONS: IDEOption[] = [
-  { 
-    name: "Cursor", 
-    appName: "cursor",
-    shortcut: {
-      modifiers: [],
-      key: "return"
-    }
-  },
-  { 
-    name: "VSCode", 
-    appName: "visual studio code",
+  {
+    name: "Wezterm",
+    appName: "Wezterm",
     shortcut: {
       modifiers: ["cmd"],
-      key: "return"
-    }
+      key: "return",
+    },
   },
-  { 
-    name: "Windsurf", 
-    appName: "windsurf",
-    shortcut: {
-      modifiers: ["opt"],
-      key: "return"
-    }
-  }
 ];
 
 function Command() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { workspacePath = "~/Projects" } = getPreferenceValues<Preferences>();
+  const { workspacePath = "~/Projects", weztermPath = "wezterm" } = getPreferenceValues<Preferences>();
 
   useEffect(() => {
     const resolvedPath = workspacePath.replace(/^~/, process.env.HOME || "");
@@ -91,7 +76,7 @@ function Command() {
   }
 
   async function isProjectDir(dir: string): Promise<boolean> {
-    const indicators = [".git", "package.json", "Cargo.toml", "go.mod", "requirements.txt"];
+    const indicators = [".git", "package.json", "Cargo.toml", "go.mod", "pyproject.toml", "requirements.txt"];
     for (const indicator of indicators) {
       try {
         await fs.promises.access(path.join(dir, indicator));
@@ -104,7 +89,7 @@ function Command() {
   }
 
   function openInIDE(projectPath: string, ide: IDEOption) {
-    exec(`open -a "${ide.appName}" "${projectPath}"`, async (error) => {
+    exec(`${weztermPath} cli spawn --cwd "${projectPath}"`, async (error) => {
       if (error) {
         console.error(`Error opening ${ide.name}:`, error);
         await showToast({
@@ -150,3 +135,4 @@ function Command() {
 }
 
 export default Command;
+
