@@ -19,7 +19,7 @@ interface IDEOption {
 interface Preferences {
   workspacePath: string;
   weztermPath: string;
-  nvimPath: string;
+  launchCmd: string;
 }
 
 const IDE_OPTIONS: IDEOption[] = [
@@ -39,7 +39,7 @@ function Command() {
   const {
     workspacePath = "~/Projects",
     weztermPath = "wezterm",
-    nvimPath = "nvim",
+    launchCmd = "zsh",
   } = getPreferenceValues<Preferences>();
 
   useEffect(() => {
@@ -94,21 +94,24 @@ function Command() {
   }
 
   function openInIDE(projectPath: string, ide: IDEOption) {
-    exec(`${weztermPath} cli spawn --cwd "${projectPath}" -- ${nvimPath}`, async (error) => {
-      if (error) {
-        console.error(`Error opening ${ide.name}:`, error);
-        await showToast({
-          style: Toast.Style.Failure,
-          title: `Failed to open project`,
-          message: `Make sure ${ide.name} is installed and try again.`,
-        });
-      } else {
-        await showToast({
-          style: Toast.Style.Success,
-          title: `Project opened in ${ide.name}`,
-        });
-      }
-    });
+    exec(
+      `osascript -e 'tell application "WezTerm" to activate'; ${weztermPath} cli spawn --cwd "${projectPath}" -- ${launchCmd}`,
+      async (error) => {
+        if (error) {
+          console.error(`Error opening ${ide.name}:`, error);
+          await showToast({
+            style: Toast.Style.Failure,
+            title: `Failed to open project`,
+            message: `Make sure ${ide.name} is installed and try again.`,
+          });
+        } else {
+          await showToast({
+            style: Toast.Style.Success,
+            title: `Project opened in ${ide.name}`,
+          });
+        }
+      },
+    );
     closeMainWindow({ clearRootSearch: true });
   }
 
