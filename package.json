@@ -22,8 +22,8 @@
           "required": true,
           "title": "Workspace Path",
           "description": "Path to your workspace directory",
-          "default": "~/Projects",
-          "placeholder": "~/Projects"
+          "default": "~/Main/Repos",
+          "placeholder": "~/Main/Repos"
         },
         {
           "name": "weztermPath",
@@ -31,8 +31,17 @@
           "required": true,
           "title": "wezterm path",
           "description": "Path to your wezterm executable",
-          "default": "wezterm",
-          "placeholder": "wezterm"
+          "default": "/opt/homebrew/bin/wezterm",
+          "placeholder": "/opt/homebrew/bin/wezterm"
+        },
+        {
+          "name": "nvimPath",
+          "type": "textfield",
+          "required": true,
+          "title": "Editor path",
+          "description": "Path to your editor executable",
+          "default": "/Users/user/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/nvim",
+          "placeholder": "/Users/user/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/nvim"
         }
       ]
     }
@@ -57,4 +66,3 @@
     "publish": "npx @raycast/api@latest publish"
   }
 }
-

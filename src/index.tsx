@@ -19,6 +19,7 @@ interface IDEOption {
 interface Preferences {
   workspacePath: string;
   weztermPath: string;
+  nvimPath: string;
 }
 
 const IDE_OPTIONS: IDEOption[] = [
@@ -35,7 +36,11 @@ const IDE_OPTIONS: IDEOption[] = [
 function Command() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { workspacePath = "~/Projects", weztermPath = "wezterm" } = getPreferenceValues<Preferences>();
+  const {
+    workspacePath = "~/Projects",
+    weztermPath = "wezterm",
+    nvimPath = "nvim",
+  } = getPreferenceValues<Preferences>();
 
   useEffect(() => {
     const resolvedPath = workspacePath.replace(/^~/, process.env.HOME || "");
@@ -89,7 +94,7 @@ function Command() {
   }
 
   function openInIDE(projectPath: string, ide: IDEOption) {
-    exec(`${weztermPath} cli spawn --cwd "${projectPath}"`, async (error) => {
+    exec(`${weztermPath} cli spawn --cwd "${projectPath}" -- ${nvimPath}`, async (error) => {
       if (error) {
         console.error(`Error opening ${ide.name}:`, error);
         await showToast({
@@ -135,4 +140,3 @@ function Command() {
 }
 
 export default Command;
-
