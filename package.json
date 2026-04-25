@@ -40,8 +40,8 @@
           "required": true,
           "title": "Launch command",
           "description": "What to execute when opening project",
-          "default": "/bin/zsh -l -c 'source ~/.zshrc; /Users/user/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/nvim; zsh -l'",
-          "placeholder": "/bin/zsh -l -c 'source ~/.zshrc; /Users/user/.local/share/devbox/global/default/.devbox/nix/profile/default/bin/nvim; zsh -l'"
+          "default": "/bin/zsh -l -c 'source ~/.zprofile; source ~/.zshrc; nvim; zsh -i'",
+          "placeholder": "/bin/zsh -l -c 'source ~/.zprofile; source ~/.zshrc; nvim; zsh -i'"
         }
       ]
     }
