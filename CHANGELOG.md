@@ -1,4 +1,4 @@
-# Open Projects on IDE Changelog
+# Open Projects in Herdr Changelog
 
 ## [Initial Version] - 2025-03-04
 
@@ -18,3 +18,8 @@
 - Configurable workspace path in extension settings
 - Project list interface with path display
 - Success/failure notifications when opening projects
+
+## Herdr Workspaces
+
+### Changed
+- Create a Herdr workspace with a shell pane instead of opening WezTerm

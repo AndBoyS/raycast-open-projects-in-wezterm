@@ -1,6 +1,6 @@
-# Open Projects in Wezterm
+# Open Projects in Herdr
 
-A [Raycast](https://raycast.com) extension that allows you to quickly open your development projects in wezterm and your editor (by default nvim)
+A [Raycast](https://raycast.com) extension that allows you to quickly create Herdr workspaces for your development projects.
 
 ## Installation
 

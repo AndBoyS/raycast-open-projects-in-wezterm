@@ -1,7 +1,7 @@
 import { List, showToast, Toast, Action, ActionPanel, closeMainWindow, getPreferenceValues } from "@raycast/api";
 import type { KeyboardShortcut } from "@raycast/api";
 import { useEffect, useState } from "react";
-import { exec } from "child_process";
+import { execFile } from "child_process";
 import fs from "fs";
 import path from "path";
 
@@ -18,14 +18,13 @@ interface IDEOption {
 
 interface Preferences {
   workspacePath: string;
-  weztermPath: string;
-  launchCmd: string;
+  herdrPath: string;
 }
 
 const IDE_OPTIONS: IDEOption[] = [
   {
-    name: "Wezterm",
-    appName: "Wezterm",
+    name: "Herdr",
+    appName: "Herdr",
     shortcut: {
       modifiers: ["cmd"],
       key: "return",
@@ -36,11 +35,7 @@ const IDE_OPTIONS: IDEOption[] = [
 function Command() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const {
-    workspacePath = "~/Projects",
-    weztermPath = "wezterm",
-    launchCmd = "zsh",
-  } = getPreferenceValues<Preferences>();
+  const { workspacePath = "~/Projects", herdrPath = "herdr" } = getPreferenceValues<Preferences>();
 
   useEffect(() => {
     const resolvedPath = workspacePath.replace(/^~/, process.env.HOME || "");
@@ -93,21 +88,22 @@ function Command() {
     return false;
   }
 
-  function openInIDE(projectPath: string, ide: IDEOption) {
-    exec(
-      `osascript -e 'tell application "WezTerm" to activate'; ${weztermPath} cli spawn --cwd "${projectPath}" -- ${launchCmd}`,
+  function openInHerdr(project: Project) {
+    execFile(
+      herdrPath,
+      ["workspace", "create", "--cwd", project.path, "--label", project.name, "--focus"],
       async (error) => {
         if (error) {
-          console.error(`Error opening ${ide.name}:`, error);
+          console.error("Error opening project in Herdr:", error);
           await showToast({
             style: Toast.Style.Failure,
-            title: `Failed to open project`,
-            message: `Make sure ${ide.name} is installed and try again.`,
+            title: "Failed to open project",
+            message: "Make sure Herdr is installed and try again.",
           });
         } else {
           await showToast({
             style: Toast.Style.Success,
-            title: `Project opened in ${ide.name}`,
+            title: "Workspace created in Herdr",
           });
         }
       },
@@ -129,7 +125,7 @@ function Command() {
                   <Action
                     key={ide.name}
                     title={`Open in ${ide.name}`}
-                    onAction={() => openInIDE(project.path, ide)}
+                    onAction={() => openInHerdr(project)}
                     shortcut={ide.shortcut}
                   />
                 ))}

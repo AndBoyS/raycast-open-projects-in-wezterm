@@ -1,8 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "open-projects-on-ide",
-  "title": "Open Projects on IDE",
-  "description": "Open projects in your preferred IDE",
+  "title": "Open Projects in Herdr",
+  "description": "Create Herdr workspaces for your projects",
   "icon": "command-icon.png",
   "author": "Leon Ho",
   "categories": [
@@ -12,8 +12,8 @@
   "commands": [
     {
       "name": "index",
-      "title": "Open Project",
-      "description": "Open a project in your preferred IDE",
+      "title": "Open Project in Herdr",
+      "description": "Create a Herdr workspace for a project",
       "mode": "view",
       "preferences": [
         {
@@ -26,22 +26,13 @@
           "placeholder": "~/Main/Repos"
         },
         {
-          "name": "weztermPath",
+          "name": "herdrPath",
           "type": "textfield",
           "required": true,
-          "title": "wezterm path",
-          "description": "Path to your wezterm executable",
-          "default": "/opt/homebrew/bin/wezterm",
-          "placeholder": "/opt/homebrew/bin/wezterm"
-        },
-        {
-          "name": "launchCmd",
-          "type": "textfield",
-          "required": true,
-          "title": "Launch command",
-          "description": "What to execute when opening project",
-          "default": "/bin/zsh -l -c 'source ~/.zprofile; source ~/.zshrc; nvim; zsh -i'",
-          "placeholder": "/bin/zsh -l -c 'source ~/.zprofile; source ~/.zshrc; nvim; zsh -i'"
+          "title": "Herdr path",
+          "description": "Path to your Herdr executable",
+          "default": "herdr",
+          "placeholder": "herdr"
         }
       ]
     }
