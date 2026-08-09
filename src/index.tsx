@@ -10,6 +10,11 @@ interface Project {
   path: string;
 }
 
+interface HerdrPane {
+  workspace_id: string;
+  cwd?: string;
+}
+
 interface IDEOption {
   name: string;
   appName: string;
@@ -88,26 +93,52 @@ function Command() {
     return false;
   }
 
-  function openInHerdr(project: Project) {
-    execFile(
-      herdrPath,
-      ["workspace", "create", "--cwd", project.path, "--label", project.name, "--focus"],
-      async (error) => {
+  function runHerdr(args: string[]): Promise<string> {
+    return new Promise((resolve, reject) => {
+      execFile(herdrPath, args, (error, stdout) => {
         if (error) {
-          console.error("Error opening project in Herdr:", error);
-          await showToast({
-            style: Toast.Style.Failure,
-            title: "Failed to open project",
-            message: "Make sure Herdr is installed and try again.",
-          });
+          reject(error);
         } else {
-          await showToast({
-            style: Toast.Style.Success,
-            title: "Workspace created in Herdr",
-          });
+          resolve(stdout);
         }
-      },
-    );
+      });
+    });
+  }
+
+  async function openInHerdr(project: Project) {
+    try {
+      const paneList = JSON.parse(await runHerdr(["pane", "list"]));
+      const panes = paneList.result.panes as HerdrPane[];
+      const projectPath = path.resolve(project.path);
+      const existingPane = panes.find((pane) => {
+        if (!pane.cwd) {
+          return false;
+        }
+
+        return path.resolve(pane.cwd) === projectPath;
+      });
+
+      if (existingPane) {
+        await runHerdr(["workspace", "focus", existingPane.workspace_id]);
+        await showToast({
+          style: Toast.Style.Success,
+          title: "Workspace focused in Herdr",
+        });
+      } else {
+        await runHerdr(["workspace", "create", "--cwd", projectPath, "--label", project.name, "--focus"]);
+        await showToast({
+          style: Toast.Style.Success,
+          title: "Workspace created in Herdr",
+        });
+      }
+    } catch (error) {
+      console.error("Error opening project in Herdr:", error);
+      await showToast({
+        style: Toast.Style.Failure,
+        title: "Failed to open project",
+        message: "Make sure Herdr is installed and try again.",
+      });
+    }
     closeMainWindow({ clearRootSearch: true });
   }
 
